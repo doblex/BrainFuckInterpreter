@@ -1,4 +1,5 @@
 import os, sys
+import argparse
 
 script_dir = os.path.dirname(os.path.abspath(__file__)) #get current directory
 
@@ -7,9 +8,8 @@ CELL_MEMORY = 256   #max number on a cell
 
 def readFile(filename):
     """Read file"""
-    filepath = os.path.join(script_dir, filename)
 
-    with open(filepath) as f:
+    with open(filename) as f:
         return f.read()
 
 
@@ -83,23 +83,42 @@ def execute(code):
     print("\nProgram executed")
 
 def main():
-    if len(sys.argv) != 2:
-        print("Use: python brainfuck.py <file.xxx>")
+
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-t", "--Text", help="Interpret the text passed")
+    group.add_argument("-f", "--File", help="Interpret the file passed")
+    args = parser.parse_args()
+
+    if args.File:
+
+        filename = args.File
+
+        try:
+            code = readFile(filename)
+            execute(code)
+
+        except FileNotFoundError:
+            print(f"Error: Cannot find file '{filename}'.")
+            sys.exit(1)
+
+        except SyntaxError as error:
+            print(f"Syntax error: {error}")
+            sys.exit(1)
+
+    elif args.Text:
+        try:
+            execute(args.Text)
+
+        except SyntaxError as error:
+                    print(f"Syntax error: {error}")
+                    sys.exit(1)
+
+    else:
+        parser.print_help()
         sys.exit(1)
 
-    filename = sys.argv[1]
 
-    try:
-        code = readFile(filename)
-        execute(code)
-
-    except FileNotFoundError:
-        print(f"Errore: file '{filename}' non trovato.")
-        sys.exit(1)
-
-    except SyntaxError as error:
-        print(f"Errore di sintassi: {error}")
-        sys.exit(1)
 
 
 if __name__ == "__main__":
