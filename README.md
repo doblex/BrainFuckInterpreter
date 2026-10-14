@@ -20,7 +20,7 @@ No external dependencies. The project uses only Python's standard library (os an
 
 📂 Project Structure<br>
 .<br>
-├── brainfuck.py       # Brainfuck interpreter<br>
+├── BFInterpreter.py       # Brainfuck interpreter<br>
 ├── hello.bf           # Example Brainfuck program<br>
 └── README.md          # Project documentation<br>
 
@@ -42,7 +42,7 @@ No additional installation is required.
 
 Run the interpreter by passing the source file as a command-line argument:
 
-python brainfuck.py hello.bf
+python BFInterpreter.py hello.bf
 
 The interpreter reads the file, builds the jump table, and executes the code.
 
